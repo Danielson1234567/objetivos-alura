@@ -53,7 +53,7 @@ body {
 }
 
 .botao:first-child {
-  border-radius: 40px 40px 0 0;
+  border-radius: 40px 0 0;
 }
 
 .botoes {
