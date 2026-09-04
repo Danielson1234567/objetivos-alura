@@ -55,7 +55,10 @@ body {
 .botao:first-child {
   border-radius: 40px 0 0;
 }
-
+.ativo {
+  background-color: #6e68b2;
+  border-bottom: 4px solid var(--verde);
+}
 
 @media screen and (min-width: 768px) {
   /* Código omitido */
@@ -66,8 +69,5 @@ body {
 .botoes {
   display: flex;
 }
-.ativo {
-  background-color: #6e68b2;
-  border-bottom: 4px solid var(--verde);
-}
+
 }
