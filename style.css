@@ -56,18 +56,18 @@ body {
   border-radius: 40px 0 0;
 }
 .ativo {
-  background-color: #6e68b2;
+  background-color: var(--botao-ativo);
   border-bottom: 4px solid var(--verde);
 }
 
 @media screen and (min-width: 768px) {
-  /* Código omitido */
+    /* Código omitido */
 
-  .botao:last-child {
-    border-radius: 0 40px 0 0;
-  }
-.botoes {
-  display: flex;
-}
+    .botao:last-child {
+        border-radius: 0 40px 0 0;
+    }
 
-}
+    .botoes {
+        display: flex;
+    }
+} /* <--- Certifique-se de que essa chave fecha o @media no final do arquivo */
