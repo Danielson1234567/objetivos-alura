@@ -66,4 +66,8 @@ body {
 .botoes {
   display: flex;
 }
+.ativo {
+  background-color: #6e68b2;
+  border-bottom: 4px solid var(--verde);
+}
 }
