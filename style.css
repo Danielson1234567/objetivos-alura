@@ -65,6 +65,9 @@ body {
   flex: 1;
   text-align: center;
   transition: background-color 0.3s;
+  .botoes {
+  display: flex;
+}
 }
 
 .botao:first-child {
