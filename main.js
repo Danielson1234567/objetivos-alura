@@ -1,59 +1,117 @@
-const botoes = document.querySelectorAll(".botao");
-const textos = document.querySelectorAll(".aba-conteudo");
+const btnAdicionar = document.getElementById("btn-adicionar");
+const containerBotoes = document.getElementById("container-botoes");
+const containerTextos = document.getElementById("container-textos");
 
-// Alternar abas ativas ao clicar nos botões
-for (let i = 0; i < botoes.length; i++) {
-  botoes[i].onclick = function () {
-    for (let j = 0; j < botoes.length; j++) {
-      botoes[j].classList.remove("ativo");
-      textos[j].classList.remove("ativo");
-    }
+const listaObjetivos = [];
 
-    botoes[i].classList.add("ativo");
-    textos[i].classList.add("ativo");
-  };
+// Função para adicionar um novo objetivo
+function criarNovoObjetivo() {
+  const nomeAba = prompt("Digite um nome curto para a aba (ex: Cursos):");
+  if (!nomeAba) return;
+
+  const tituloObjetivo = prompt("Digite a descrição do objetivo (ex: Estudar 4 cursos):");
+  if (!tituloObjetivo) return;
+
+  const dataFinalInput = prompt("Digite a data final no formato AAAA-MM-DD (ex: 2026-12-31):");
+  if (!dataFinalInput) return;
+
+  const id = listaObjetivos.length;
+  const dataFinal = new Date(`${dataFinalInput}T23:59:59`);
+
+  listaObjetivos.push({
+    id,
+    nomeAba,
+    tituloObjetivo,
+    dataFinal
+  });
+
+  renderizarObjetivos();
+  selecionarAba(id);
 }
 
-// Definição das datas de objetivo
-const tempoObjetivo1 = new Date("2026-12-31T23:59:59");
-const tempoObjetivo2 = new Date("2026-11-15T23:59:59");
-const tempoObjetivo3 = new Date("2026-12-01T23:59:59");
-const tempoObjetivo4 = new Date("2026-12-20T23:59:59");
+// Atualiza e desenha as abas e textos na tela
+function renderizarObjetivos() {
+  containerBotoes.innerHTML = "";
+  containerTextos.innerHTML = "";
 
-const tempos = [tempoObjetivo1, tempoObjetivo2, tempoObjetivo3, tempoObjetivo4];
+  listaObjetivos.forEach((obj, index) => {
+    // Cria o botão da aba
+    const btn = document.createElement("button");
+    btn.classList.add("botao");
+    btn.textContent = obj.nomeAba;
+    btn.onclick = () => selecionarAba(index);
+    containerBotoes.appendChild(btn);
 
+    // Cria o conteúdo da aba
+    const aba = document.createElement("div");
+    aba.classList.add("aba-conteudo");
+    aba.innerHTML = `
+      <h3 class="aba-conteudo-titulo-principal">${obj.tituloObjetivo}</h3>
+      <h4 class="aba-conteudo-titulo-secundario">Tempo para completar o objetivo</h4>
+      <div class="contador">
+        <div class="contador-digito">
+          <p class="contador-digito-numero" id="dias${index}">0</p>
+          <p class="contador-digito-texto">dias</p>
+        </div>
+        <div class="contador-digito">
+          <p class="contador-digito-numero" id="horas${index}">0</p>
+          <p class="contador-digito-texto">horas</p>
+        </div>
+        <div class="contador-digito">
+          <p class="contador-digito-numero" id="min${index}">0</p>
+          <p class="contador-digito-texto">min</p>
+        </div>
+        <div class="contador-digito">
+          <p class="contador-digito-numero" id="seg${index}">0</p>
+          <p class="contador-digito-texto">seg</p>
+        </div>
+      </div>
+    `;
+    containerTextos.appendChild(aba);
+  });
+}
+
+// Troca de aba
+function selecionarAba(index) {
+  const botoes = document.querySelectorAll(".botao");
+  const abas = document.querySelectorAll(".aba-conteudo");
+
+  botoes.forEach((btn, i) => {
+    btn.classList.toggle("ativo", i === index);
+  });
+
+  abas.forEach((aba, i) => {
+    aba.classList.toggle("ativo", i === index);
+  });
+}
+
+// Cálculo da contagem regressiva
 function calculaTempo(tempoObjetivo) {
   let tempoAtual = new Date();
   let tempoFinal = tempoObjetivo - tempoAtual;
+
+  if (tempoFinal <= 0) return [0, 0, 0, 0];
 
   let segundos = Math.floor(tempoFinal / 1000);
   let minutos = Math.floor(segundos / 60);
   let horas = Math.floor(minutos / 60);
   let dias = Math.floor(horas / 24);
 
-  segundos %= 60;
-  minutos %= 60;
-  horas %= 24;
-
-  if (tempoFinal > 0) {
-    return [dias, horas, minutos, segundos];
-  } else {
-    return [0, 0, 0, 0];
-  }
+  return [dias, horas % 24, minutos % 60, segundos % 60];
 }
 
 function atualizaCronometro() {
-  for (let i = 0; i < tempos.length; i++) {
-    document.getElementById("dias" + i).textContent = calculaTempo(tempos[i])[0];
-    document.getElementById("horas" + i).textContent = calculaTempo(tempos[i])[1];
-    document.getElementById("min" + i).textContent = calculaTempo(tempos[i])[2];
-    document.getElementById("seg" + i).textContent = calculaTempo(tempos[i])[3];
-  }
+  listaObjetivos.forEach((obj, i) => {
+    const tempo = calculaTempo(obj.dataFinal);
+    const elemDias = document.getElementById(`dias${i}`);
+    if (elemDias) {
+      elemDias.textContent = tempo[0];
+      document.getElementById(`horas${i}`).textContent = tempo[1];
+      document.getElementById(`min${i}`).textContent = tempo[2];
+      document.getElementById(`seg${i}`).textContent = tempo[3];
+    }
+  });
 }
 
-function comecaCronometro() {
-  atualizaCronometro();
-  setInterval(atualizaCronometro, 1000);
-}
-
-comecaCronometro();
+btnAdicionar.addEventListener("click", criarNovoObjetivo);
+setInterval(atualizaCronometro, 1000);

@@ -1,12 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&display=swap");
 
 :root {
-  --cor-de-fundo: #0f054b;
-  --fundo-card: #10035a;
+  --cor-de-fundo: #1E1C2A;
+  --fundo-card: #282538;
   --verde: #6fff57;
   --branco: #ffffff;
-  --botao-ativo: #150283;
-  --botao-inativo: rgba(12, 3, 63, 0.6);
+  --botao-ativo: #282538;
+  --botao-inativo: rgba(40, 37, 56, 0.6);
 }
 
 * {
@@ -24,6 +24,31 @@ body {
   justify-content: center;
   align-items: center;
   padding: 20px;
+  position: relative;
+}
+
+/* Botão Flutuante de Mais (+) */
+.btn-flutuante {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background-color: var(--verde);
+  color: #1E1C2A;
+  font-size: 32px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s, background-color 0.2s;
+  z-index: 1000;
+}
+
+.btn-flutuante:hover {
+  transform: scale(1.1);
+  background-color: #5be045;
 }
 
 .conteudo-principal {
@@ -49,11 +74,10 @@ body {
   width: 100%;
 }
 
+/* Botões da aba em Flexbox */
 .botoes {
   display: flex;
-  flex-wrap: wrap;.botoes {
-  display: flex;
-}
+  flex-wrap: wrap;
 }
 
 .botao {
@@ -67,9 +91,6 @@ body {
   flex: 1;
   text-align: center;
   transition: background-color 0.3s;
-  .botoes {
-  display: flex;
-}
 }
 
 .botao:first-child {
@@ -85,12 +106,13 @@ body {
   border-bottom: 3px solid var(--verde);
 }
 
-/* Área de conteúdo das abas */
+/* Painel de Conteúdo */
 .abas-textos {
   background-color: var(--fundo-card);
   padding: 40px;
   border-radius: 0 0 20px 20px;
   text-align: center;
+  min-height: 250px;
 }
 
 .aba-conteudo {
@@ -115,7 +137,7 @@ body {
   margin-bottom: 30px;
 }
 
-/* Estilo do Contador */
+/* Contador de Tempo */
 .contador {
   display: flex;
   justify-content: center;
